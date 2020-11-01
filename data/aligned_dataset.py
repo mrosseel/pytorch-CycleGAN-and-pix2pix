@@ -6,7 +6,7 @@ from PIL import Image
 import random
 import cv2
 from matplotlib import pyplot as plt
-simport albumentations as Al
+import albumentations as Al
 
 
 
