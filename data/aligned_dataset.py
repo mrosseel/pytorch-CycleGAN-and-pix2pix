@@ -65,8 +65,8 @@ class AlignedDataset(BaseDataset):
             transformOutput,
         ])
         random.seed(42) 
-        A = transformInput(image=A)['image']
-        B = transformOutput(image=B)['image']
+        A = transformInput(image=numpy.array(A))['image']
+        B = transformOutput(image=numpy.array(B))['image']
         
         # A_transform = get_transform(self.opt, transform_params, grayscale=(self.input_nc == 1))
         # B_transform = get_transform(self.opt, transform_params, grayscale=(self.output_nc == 1))
