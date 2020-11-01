@@ -3,6 +3,12 @@ from data.base_dataset import BaseDataset, get_params, get_transform
 from data.image_folder import make_dataset
 from PIL import Image
 
+import random
+import cv2
+from matplotlib import pyplot as plt
+simport albumentations as Al
+
+
 
 class AlignedDataset(BaseDataset):
     """A dataset class for paired image dataset.
@@ -46,12 +52,27 @@ class AlignedDataset(BaseDataset):
         B = AB.crop((w2, 0, w, h))
 
         # apply the same transform to both A and B
-        transform_params = get_params(self.opt, A.size)
-        A_transform = get_transform(self.opt, transform_params, grayscale=(self.input_nc == 1))
-        B_transform = get_transform(self.opt, transform_params, grayscale=(self.output_nc == 1))
+        # transform_params = get_params(self.opt, A.size)
+        transformOutput = Al.Compose([
+            Al.crop(x_max=256, y_max=256),
+            Al.RandomRotate90(),
+            Al.Flip(),
+        ])
+        transformInput = Al.Compose([
+            Al.Blur(blur_limit=3),
+            Al.Equalize(always_apply=True),
+            Al.RandomBrightnessContrast(),
+            transformOutput,
+        ])
+        random.seed(42) 
+        A = transformInput(image=A)['image']
+        B = transformOutput(image=B)['image']
+        
+        # A_transform = get_transform(self.opt, transform_params, grayscale=(self.input_nc == 1))
+        # B_transform = get_transform(self.opt, transform_params, grayscale=(self.output_nc == 1))
 
-        A = A_transform(A)
-        B = B_transform(B)
+        # A = A_transform(A)
+        # B = B_transform(B)
 
         return {'A': A, 'B': B, 'A_paths': AB_path, 'B_paths': AB_path}
 
