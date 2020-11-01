@@ -6,6 +6,7 @@ from PIL import Image
 import random
 import cv2
 from matplotlib import pyplot as plt
+import numpy as np
 import albumentations as Al
 
 
@@ -65,8 +66,8 @@ class AlignedDataset(BaseDataset):
             transformOutput,
         ])
         random.seed(42) 
-        A = transformInput(image=numpy.array(A))['image']
-        B = transformOutput(image=numpy.array(B))['image']
+        A = transformInput(image=np.array(A))['image']
+        B = transformOutput(image=np.array(B))['image']
         
         # A_transform = get_transform(self.opt, transform_params, grayscale=(self.input_nc == 1))
         # B_transform = get_transform(self.opt, transform_params, grayscale=(self.output_nc == 1))
