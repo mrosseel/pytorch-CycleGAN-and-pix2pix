@@ -54,7 +54,7 @@ class AlignedDataset(BaseDataset):
         # apply the same transform to both A and B
         # transform_params = get_params(self.opt, A.size)
         transformOutput = Al.Compose([
-            Al.crop(x_max=256, y_max=256),
+            Al.Crop(x_max=256, y_max=256),
             Al.RandomRotate90(),
             Al.Flip(),
         ])
